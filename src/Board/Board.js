@@ -7,6 +7,7 @@ const Board = () => {
     const [squares, setSquares] = useState(Array(9).fill(null));
     const [xMove, setXMove] = useState(true);
     const [isWinner, setIsWinner] = useState(false);
+    const [isDraw, setIsDraw] = useState(false);
 
 
     useEffect(() => {
@@ -23,6 +24,20 @@ const Board = () => {
             [2, 4, 6]
         ]
 
+        // const isWin = [
+        //     [0,1,2,3],
+        //     [4,5,6,7],
+        //     [8,9,10,11],
+        //     [12,13,14,15],
+        //     [0,5,10,15],
+        //     [3,6,9,12],
+        //     [0,4,8,12],
+        //     [1,5,9,13],
+        //     [2,6,10,14],
+        //     [3,7,11,15]
+
+        // ]
+
         const checkWinner = () => {
 
             for (let i = 0; i < isWin.length; i++) {
@@ -35,7 +50,14 @@ const Board = () => {
             }
         }
         checkWinner();
-    }, [squares, xMove, isWinner])
+
+
+
+        if(!squares.includes(null) && isWinner === false){
+            setIsDraw(true);
+        }
+
+    }, [squares, xMove, isWinner, isDraw])
 
 
 
@@ -54,6 +76,7 @@ const Board = () => {
         setSquares(Array(9).fill(null));
         setXMove(true);
         setIsWinner(false);
+        setIsDraw(false);
     }
 
 
@@ -67,11 +90,10 @@ const Board = () => {
         return x
     }
 
-
     return (
         <>
 
-            <div className="board__turn">{!isWinner ? `Сейчас ходит: ${xMove ? 'X' : '0'}` : `Победитель: ${!xMove ? 'X' : '0'}`}</div>
+            <div className="board__turn">{!isWinner ? `${isDraw ? `Ничья`: `Сейчас ходит: ${xMove ? 'X' : '0'}`}` : `Победитель: ${!xMove ? 'X' : '0'}`}</div>
             <div className="board">
                 <BoardCells />
             </div>
